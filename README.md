@@ -40,3 +40,8 @@ Rate limits reduce exposure; they do not create a hard billing ceiling for AWS r
 Open feature PRs into `dev` and release PRs into `main`. Both branches require the `Quality` check and resolved review conversations. Approval count is zero so a sole maintainer can merge their own passing PRs. See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
 
 CI runs lint, tests, the frontend build, a publication pattern check and a production dependency audit. Original code is MIT licensed; dependency licenses and branding rights remain separate.
+
+## Graphical traceroute
+
+Traceroute results include a Route Explorer with a latency chart, selectable hop details, unanswered-hop indicators, and a raw-output switch. Explore a sample trace without starting a measurement. Visualization uses the existing Globalping response entirely in the browser; it adds no probe, geolocation, map-service, or backend requests. Hop RTT is measured from the probe, not incremental link delay. The chart is schematic, not a geographic map.
+

@@ -1,3 +1,4 @@
+import {renderTrace,sampleTrace} from './trace-view.js';
 const form=document.querySelector('#checker-form');
 const status=document.querySelector('#checker-status');
 const runButton=document.querySelector('#checker-run');
@@ -5,6 +6,7 @@ const stopButton=document.querySelector('#checker-stop');
 const results=document.querySelector('#checker-results');
 const cards=document.querySelector('#checker-result-cards');
 let controller,lastResult,cooldownUntil=0;
+let traceView='visual';
 const labels={overview:'Overview',ping:'Ping',traceroute:'Traceroute',dns:'DNS records',tcp:'TCP latency',http:'HTTP headers',tls:'TLS certificate'};
 function say(text,error=false){status.textContent=text;status.dataset.state=error?'error':'info';}
 function element(tag,text){const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);return node;}
@@ -22,6 +24,10 @@ function render(data){
   if(data.http)card('HTTP response',data.http.error?{Result:data.http.error}:{Status:data.http.status,'Time to headers':`${data.http.ms} ms`,...data.http.headers},'HEAD request to the root. Redirects are shown but never followed. Some sites reject HEAD requests.');
   if(data.tls)card('TLS certificate',data.tls.error?{Result:data.tls.error}:{Trust:'Certificate verified',Protocol:data.tls.protocol,Subject:data.tls.subject,Issuer:data.tls.issuer,'Valid from':data.tls.validFrom,'Valid until':data.tls.validTo,'Days remaining':data.tls.daysRemaining},'TLS on port 443. A valid certificate alone does not establish that a site is trustworthy.');
   if(data.measurement){
+    if(data.mode==='traceroute'&&data.measurement.results?.length){
+      cards.append(renderTrace(data.measurement.results[0],{target:data.host,sample:data.sample===true,view:traceView,onView:value=>{traceView=value;}}));
+      return;
+    }
     const m=data.measurement;const section=card(labels[data.mode],{Provider:'Globalping',Status:m.error||m.status||'Waiting for probe'},'This is a remote measurement. Hidden hops or unanswered packets do not necessarily mean a host is offline.');
     if(m.results){for(const entry of m.results.slice(0,1)){
       section.append(element('p',[entry.probe?.city,entry.probe?.country,entry.probe?.network].filter(Boolean).join(' · ')));
@@ -49,6 +55,9 @@ async function poll(data,signal){
   data.measurement.status='Results wait timed out';render(data);say('Stopped waiting after 40 seconds. The remote probe may still finish; no new check was started.',true);
 }
 form.addEventListener('change',()=>{document.querySelector('#checker-provider-note').hidden=!['ping','traceroute'].includes(new FormData(form).get('mode'));});
+const demoButton=element('button','Explore a sample trace');demoButton.type='button';demoButton.className='checker-secondary trace-demo';
+form.querySelector('.checker-actions').append(demoButton);
+demoButton.addEventListener('click',()=>{if(controller)return;traceView='visual';lastResult=sampleTrace();render(lastResult);say('Sample data only. No probe was started and no allowance was used.');results.scrollIntoView({block:'start',behavior:'instant'});});
 stopButton.addEventListener('click',()=>controller?.abort());
 form.addEventListener('submit',async event=>{
   event.preventDefault();if(controller)return;
