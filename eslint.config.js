@@ -1,0 +1,1 @@
+import js from '@eslint/js';import globals from 'globals';export default [{ignores:['src/assets/**']},js.configs.recommended,{files:['**/*.{js,mjs,cjs}'],languageOptions:{globals:{...globals.node,...globals.browser}},rules:{'no-unused-vars':['error',{argsIgnorePattern:'^_',caughtErrors:'none'}]}}];

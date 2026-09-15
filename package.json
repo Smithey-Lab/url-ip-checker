@@ -1,0 +1,28 @@
+{
+  "name": "@smithey-lab/url-ip-checker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "build:infra": "node scripts/build-infra.mjs",
+    "lint": "eslint src backend scripts",
+    "test": "node --test backend/*.test.cjs",
+    "check:public": "node scripts/check-public.mjs",
+    "ci": "npm run lint && npm test && npm run build && npm run check:public"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.1131.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "esbuild": "0.28.2",
+    "eslint": "^10.10.0",
+    "globals": "^17.12.0"
+  }
+}

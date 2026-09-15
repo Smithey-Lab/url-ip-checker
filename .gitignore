@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.sandbox-build/
+src/assets/dcv/
+infra/sandbox-artifacts.json
+infra/captcha-cloudformation.json
+infra/checker-cloudformation.json
+.env*
+!.env.example
+*.zip
+*.pem
+*.key
+*deployment*.json
+.local*/
+coverage/

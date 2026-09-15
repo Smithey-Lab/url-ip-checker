@@ -1,0 +1,4 @@
+import {readdir,readFile} from 'node:fs/promises';
+const skip=new Set(['node_modules','dist','.git','.sandbox-build','assets']);
+const rules=[/AKIA[A-Z0-9]{16}/,/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,/gh[pousr]_[A-Za-z0-9]{30,}/,/github_pat_[A-Za-z0-9_]{30,}/];
+let count=0;async function scan(dir){for(const entry of await readdir(dir,{withFileTypes:true})){if(skip.has(entry.name)||entry.name.startsWith('.local'))continue;const file=dir+'/'+entry.name;if(entry.isDirectory()){await scan(file);continue;}if(!/\.(?:js|mjs|cjs|json|md|yml|yaml|html|css)$/.test(file))continue;const text=await readFile(file,'utf8');if(rules.some(rule=>rule.test(text)))throw new Error('Potential secret in '+file);count++;}}await scan('.');console.log('Public-source pattern check passed for '+count+' files. This is a backstop, not a complete secret scanner.');
