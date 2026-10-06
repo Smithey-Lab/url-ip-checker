@@ -43,5 +43,6 @@ CI runs lint, tests, the frontend build, a publication pattern check and a produ
 
 ## Graphical traceroute
 
-Traceroute results include a Route Explorer with a latency chart, selectable hop details, unanswered-hop indicators, and a raw-output switch. Explore a sample trace without starting a measurement. Visualization uses the existing Globalping response entirely in the browser; it adds no probe, geolocation, map-service, or backend requests. Hop RTT is measured from the probe, not incremental link delay. The chart is schematic, not a geographic map.
+Results also include plain-language diagnostic insights and a downloadable text summary alongside the complete JSON export. Summaries explain missing measurements and HTTP responses without treating unanswered hops as packet loss or claiming that a certificate makes a site safe. Text exports label truncated fields; JSON retains the original result. These features run locally and start no additional measurements.
 
+Traceroute results include a Route Explorer with a latency chart, selectable hop details, unanswered-hop indicators, and a raw-output switch. Explore a sample trace without starting a measurement. Visualization uses the existing Globalping response entirely in the browser; it adds no probe, geolocation, map-service, or backend requests. Hop RTT is measured from the probe, not incremental link delay. The chart is schematic, not a geographic map.
