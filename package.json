@@ -17,12 +17,12 @@
     "ci": "npm run lint && npm test && npm run build && npm run check:public"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.1156.0"
+    "@aws-sdk/client-dynamodb": "3.1172.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "esbuild": "0.28.2",
-    "eslint": "^10.13.0",
+    "eslint": "^10.15.0",
     "globals": "^17.14.0"
   }
 }
